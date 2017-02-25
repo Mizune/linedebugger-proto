@@ -3,9 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>Line Debugger</title>
-    <script src="./js/jquery-3.1.1.min.js"></script>
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <script src="./js/bootstrap.min.js"></script></head>
     <style>
       #chat_box{
         position: absolute;
@@ -13,23 +10,33 @@
       }
     </style>
     <script>
-      var ipc = require('electron').ipcRenderer;
-      
-      var chatForm = document.getElementById('chat_form');
-      var text = document.getElementById('text');
-      var logList = document.getElementById('chatLogList');
+
+
+      var $ = require('jquery');
+      $(document).ready(function() {
+        var main = require('electron').remote.require('./main.js');
+        var chatForm = $('#chat_form');
+        var text = $('#text');
+        var logList = $('#chatLogList');
+        
+        
+        $('#chat_form').submit(function(){
+          console.log(text.val());
+          alert(text.val());
+          $('#chatLogList').append('<li class="list-group-item">'+ text.val() +'</li>');
+          var result = main.sendText(text.val());
+          $('#chatLogList').append('<li class="list-group-item">'+ result +'</li>');
+          alert("hogend");
+        });
+      });
+     
      
 
-      function sendText() {
-          console.log("sendText");
-          ipc.on('sendTextReply', function(response) {
-               console.log("sendText response : " + response);
-               // ここで出力
-          });
-          ipc.send('sendText', text);
-      }
-
     </script>
+
+    <script src="./js/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="./js/bootstrap.min.js"></script></head>
   <body>
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +61,7 @@
 
 
     <div id="chat_box" class="form-control my-12 my-lg-12">
-      <form onSubmit="sendText()" id="chat_form"><input id="text" class="form-control my-12 my-lg-12" placeholder="Enter text"></form>
+      <form id="chat_form"><input type="text" id="text" class="form-control my-11 my-lg-11" placeholder="Enter text"><!--<button id="submit">Send</button>--></form>
     </div>
 
 

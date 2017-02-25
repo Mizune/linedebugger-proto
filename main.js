@@ -26,7 +26,7 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 740,
-    webPreferences: { 'nodeIntegration': false } 
+    webPreferences: { 'nodeIntegration': true } 
   });
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
@@ -38,16 +38,24 @@ app.on('ready', function() {
 
 
 
-ipc.on('sendText', function (event, arg) {
-    console.log("sendText arg : " + arg);
-    // ここでsimを叩く ->sendで戻す
-    var result = sendServer();
+// ipc.on('sendText', function (event, arg) {
+//     console.log("sendText arg : " + arg);
+//     // ここでsimを叩く ->sendで戻す
+//     var result = sendServer();
 
-    event.sender.send('sendTextReply', result);
-});
+//     event.sender.send('sendTextReply', result);
+// });
 
 
-function sendServer(){
+
+
+
+function sendServer(text){
+
+  electron.dialog.showMessageBox(mainWindow,{
+    message: "Sending text to server."
+  });
+
   var request = require('request');
   //http://garilinebot.azurewebsites.net
   //http://localhost:1337
@@ -69,7 +77,7 @@ function sendServer(){
           "message": {
               "id": "325708",
               "type": "text",
-              "text": "Hello, world"
+              "text": text
             }
         }
     ]
@@ -87,3 +95,5 @@ function sendServer(){
   return Logs;
 
 }
+
+exports.sendText = sendServer;
