@@ -2,7 +2,6 @@
 
 // アプリケーションをコントロールするモジュール
 var electron = require('electron');
-var request = require('sync-request');
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
 var ipc = electron.ipcMain;
@@ -36,74 +35,3 @@ app.on('ready', function () {
     mainWindow = null;
   });
 });
-
-
-
-// ipc.on('sendText', function (event, arg) {
-//     console.log("sendText arg : " + arg);
-//     // ここでsimを叩く ->sendで戻す
-//     var result = sendServer();
-
-//     event.sender.send('sendTextReply', result);
-// });
-
-
-
-
-
-function sendServer(text, url) {
-  var options = {
-    uri: url,
-    headers: {
-      "X-Line-Signature": "SampleSignature",
-    },
-    form: {
-      "events": [
-        {
-          "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
-          "type": "message",
-          "timestamp": 1462629479859,
-          "source": {
-            "type": "user",
-            "userId": "U206d25c2ea6bd87c17655609a1c37cb8"
-          },
-          "message": {
-            "id": "325708",
-            "type": "text",
-            "text": text
-          }
-        }
-      ]
-    },
-    json: true
-  };
-
-  var response = request('POST',url,{
-    headers: {
-      "X-Line-Signature": "SampleSignature",
-    },
-    json:{
-      "events": [
-        {
-          "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
-          "type": "message",
-          "timestamp": 1462629479859,
-          "source": {
-            "type": "user",
-            "userId": "U206d25c2ea6bd87c17655609a1c37cb8"
-          },
-          "message": {
-            "id": "325708",
-            "type": "text",
-            "text": text
-          }
-        }
-      ]
-    }
-  });
-  var json = JSON.parse(response.getBody('utf8'));
-  return json;
-
-}
-
-exports.sendServer = sendServer;
