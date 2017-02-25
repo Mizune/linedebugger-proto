@@ -57,8 +57,6 @@ function sendServer(text){
   });
 
   var request = require('request');
-  //http://garilinebot.azurewebsites.net
-  //http://localhost:1337
   var options = {
     uri: "http://localhost:1337",
     headers: {

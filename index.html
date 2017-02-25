@@ -20,13 +20,13 @@
         var logList = $('#chatLogList');
         
         
-        $('#chat_form').submit(function(){
-          console.log(text.val());
-          alert(text.val());
-          $('#chatLogList').append('<li class="list-group-item">'+ text.val() +'</li>');
-          var result = main.sendText(text.val());
-          $('#chatLogList').append('<li class="list-group-item">'+ result +'</li>');
-          alert("hogend");
+        $('#text').keypress(function(e){
+          if(e.which=='13'){
+            $('#chatLogList').append('<li class="list-group-item">'+ text.val() +'</li>');
+            var result = main.sendText(text.val());
+            $('#chatLogList').append('<li class="list-group-item">'+ result +'</li>');
+          }
+          
         });
       });
      
@@ -61,7 +61,7 @@
 
 
     <div id="chat_box" class="form-control my-12 my-lg-12">
-      <form id="chat_form"><input type="text" id="text" class="form-control my-11 my-lg-11" placeholder="Enter text"><!--<button id="submit">Send</button>--></form>
+        <input type="text" id="text" class="form-control my-11 my-lg-11" placeholder="Enter text" />
     </div>
 
 
