@@ -2,6 +2,7 @@
 
 // アプリケーションをコントロールするモジュール
 var electron = require('electron');
+var request = require('sync-request');
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
 var ipc = electron.ipcMain;
@@ -14,24 +15,24 @@ var Logs;
 let mainWindow;
 
 // 全てのウィンドウが閉じたら終了
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
   if (process.platform != 'darwin') {
     app.quit();
   }
 });
 
 // Electronの初期化完了後に実行
-app.on('ready', function() {
+app.on('ready', function () {
   // メイン画面の表示
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 740,
-    webPreferences: { 'nodeIntegration': true } 
+    webPreferences: { 'nodeIntegration': true }
   });
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   //ウィンドウが閉じられたらアプリも終了
-  mainWindow.on('closed', function() {
+  mainWindow.on('closed', function () {
     mainWindow = null;
   });
 });
@@ -50,48 +51,59 @@ app.on('ready', function() {
 
 
 
-function sendServer(text){
-
-  electron.dialog.showMessageBox(mainWindow,{
-    message: "Sending text to server."
-  });
-
-  var request = require('request');
+function sendServer(text, url) {
   var options = {
-    uri: "http://localhost:1337",
+    uri: url,
     headers: {
       "X-Line-Signature": "SampleSignature",
     },
     form: {
-    "events": [
+      "events": [
         {
           "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
           "type": "message",
           "timestamp": 1462629479859,
           "source": {
-              "type": "user",
-              "userId": "U206d25c2ea6bd87c17655609a1c37cb8"
+            "type": "user",
+            "userId": "U206d25c2ea6bd87c17655609a1c37cb8"
           },
           "message": {
-              "id": "325708",
-              "type": "text",
-              "text": text
-            }
+            "id": "325708",
+            "type": "text",
+            "text": text
+          }
         }
-    ]
-  },
-  json:true
+      ]
+    },
+    json: true
   };
-  request.post(options, function(error, response, body){
-      console.log("error = "+error);
-      console.log("body = "+body);
-      errorLog = error;
-      bodyLog = body;
-  });
 
-  Logs = "Error : " + errorLog + ", Body : "+ bodyLog;
-  return Logs;
+  var response = request('POST',url,{
+    headers: {
+      "X-Line-Signature": "SampleSignature",
+    },
+    json:{
+      "events": [
+        {
+          "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
+          "type": "message",
+          "timestamp": 1462629479859,
+          "source": {
+            "type": "user",
+            "userId": "U206d25c2ea6bd87c17655609a1c37cb8"
+          },
+          "message": {
+            "id": "325708",
+            "type": "text",
+            "text": text
+          }
+        }
+      ]
+    }
+  });
+  var json = JSON.parse(response.getBody('utf8'));
+  return json;
 
 }
 
-exports.sendText = sendServer;
+exports.sendServer = sendServer;

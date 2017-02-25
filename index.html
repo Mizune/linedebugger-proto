@@ -9,34 +9,11 @@
         bottom: 0;
       }
     </style>
-    <script>
+    <script src="./index.js" ></script>
 
-
-      var $ = require('jquery');
-      $(document).ready(function() {
-        var main = require('electron').remote.require('./main.js');
-        var chatForm = $('#chat_form');
-        var text = $('#text');
-        var logList = $('#chatLogList');
-        
-        
-        $('#text').keypress(function(e){
-          if(e.which=='13'){
-            $('#chatLogList').append('<li class="list-group-item">'+ text.val() +'</li>');
-            var result = main.sendText(text.val());
-            $('#chatLogList').append('<li class="list-group-item">'+ result +'</li>');
-          }
-          
-        });
-      });
-     
-     
-
-    </script>
-
-    <script src="./js/jquery-3.1.1.min.js"></script>
     <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <script src="./js/bootstrap.min.js"></script></head>
+    <script src="./js/bootstrap.min.js"></script>
+  </head>
   <body>
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +41,5 @@
         <input type="text" id="text" class="form-control my-11 my-lg-11" placeholder="Enter text" />
     </div>
 
-
-  
   </body>
 </html>
