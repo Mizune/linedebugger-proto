@@ -13,7 +13,7 @@ $(document).ready(function () {
             var url = $('#url').val();
             var text = $('#text').val();
             $('#text').val('');
-            $('#chatLogList').append('<li bclass="list-group-item">' + text + '</li>');
+            $('#chatLogList').append('<li bclass="list-group-item left">' + text + '</li>');
 
             var postData = {
                 "events": [
@@ -46,7 +46,14 @@ $(document).ready(function () {
                 success:function(res){
                     var body = res.json;
                     var text = body.messages[0].text;
-                    $('#chatLogList').append('<li class="list-group-item">' + text + '</li>');
+
+                    // add style?
+                    $('#chatLogList').append('<li class="list-group-item right">' + text + '</li>');
+                },
+                error:function(err){
+
+                    // add diff style?
+                    $('#chatLogList').append('<li class="list-group-item right red">' + err + '</li>');
                 }
             });
             

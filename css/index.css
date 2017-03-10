@@ -1,0 +1,17 @@
+#chat_box{
+    position: absolute;
+    bottom: 0;
+}
+
+.left{
+    text-align: left;
+
+}
+
+.right{
+    text-align:right;
+}
+
+.error{
+    color: red;
+}
