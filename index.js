@@ -45,15 +45,18 @@ $(document).ready(function () {
                 json:true,
                 success:function(res){
                     var body = res.json;
+                    console.log(body);
                     var text = body.messages[0].text;
 
                     // add style?
                     $('#chatLogList').append('<li class="list-group-item right">' + text + '</li>');
                 },
-                error:function(err){
-
+                error:function(XMLHttpRequest, textStatus, errorThrown){
+                    var errStr = XMLHttpRequest.responseText;
+                    errStr = errStr.replace('\n','<br />');
                     // add diff style?
-                    $('#chatLogList').append('<li class="list-group-item right red">' + err + '</li>');
+                    $('#chatLogList').append('<li class="list-group-item right red">エラーが発生しました</li>');
+                    $('#chatLogList').append('<li class="list-group-item right red">' + errStr + '</li>');
                 }
             });
             

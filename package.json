@@ -10,6 +10,7 @@
   "author": "Mizune",
   "license": "ISC",
   "dependencies": {
+    "electron-packager": "^8.5.2",
     "jquery": "^3.1.1"
   }
 }
